@@ -1,5 +1,7 @@
-# reference source (旧ソース。git管理対象外)
-docs/previous_src
+# docs: yaml/md のみ管理対象、それ以外は除外
+docs/*
+!docs/*.yaml
+!docs/*.md
 
 # Logs
 logs
