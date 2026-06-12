@@ -14,6 +14,21 @@ AWS Cognito（RS256 JWT）による認証と 3 段階のルートガードを実
 
 ---
 
+## スクリーンショット
+
+### トレードシミュレーター
+
+![トレードシミュレーター](docs/screen-shot/10_simulator.png)
+
+### ZigZag 分析
+
+![ZigZag 分析](docs/screen-shot/20_zigzag.png)
+![ZigZag 分析 15分足](docs/screen-shot/20_zigzag_15m.png)
+![ZigZag 分析 1時間足](docs/screen-shot/20_zigzag_1h.png)
+![ZigZag 分析 4時間足](docs/screen-shot/20_zigzag_4h.png)
+
+---
+
 ## アーキテクチャ
 
 ### ディレクトリ構成

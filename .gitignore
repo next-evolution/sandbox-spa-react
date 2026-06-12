@@ -1,7 +1,9 @@
-# docs: yaml/md のみ管理対象、それ以外は除外
+# docs: yaml/md とスクリーンショットのみ管理対象、それ以外は除外
 docs/*
 !docs/*.yaml
 !docs/*.md
+!docs/screen-shot/
+!docs/screen-shot/*
 
 # Logs
 logs
