@@ -15,6 +15,7 @@ export default defineConfig(({ mode }) => {
       proxy: {
         '/api/': {
           target: env.VITE_APP_SANDBOX_API,
+          changeOrigin: true,
         },
       },
     },
