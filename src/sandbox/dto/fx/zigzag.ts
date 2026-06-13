@@ -124,7 +124,8 @@ export interface ZigZagGenerateResponse {
   status: ZigZagStatus
 }
 
-export type BarType = 'M15' | 'H1' | 'H4' | 'D1'
+import { BAR_TYPES_TRADE } from '@/constants/barType'
+export type BarType = (typeof BAR_TYPES_TRADE)[number]
 
 export interface ZigZagBarDataRequest {
   barType: BarType

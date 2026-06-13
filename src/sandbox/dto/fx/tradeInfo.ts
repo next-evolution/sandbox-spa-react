@@ -1,3 +1,5 @@
+import { BarType } from '@/constants/barType'
+
 export const TradeType = { Buy: 'L', Sell: 'S' } as const
 export const EntryType = { F3: 'F3', FR: 'FR', F7: 'F7', UP: 'UP', DW: 'DW' } as const
 export const FibonacciType = { RV: 'RV', RR: 'RR', UP: 'UP', DW: 'DW' } as const
@@ -74,7 +76,7 @@ export const newEntry = (): TradeEntry => ({
   contractAt: nowDateTimeString(),
   entryType: EntryType.F3,
   fibonacciType: FibonacciType.RV,
-  fibonacciBar: '15M',
+  fibonacciBar: BarType.M15,
   contractPrice: 0,
   lossPrice: 0,
   riskAmount: RISK_AMOUNT,
