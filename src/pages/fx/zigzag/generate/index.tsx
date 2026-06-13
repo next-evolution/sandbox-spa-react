@@ -5,15 +5,14 @@ import { fetchZigZagStatusList, generateZigZag } from '@/sandbox/api/fx/indicato
 import type { ZigZagGenerateRequest, ZigZagStatus } from '@/sandbox/dto/fx/zigzag'
 import { InputDateTime } from '@/components/InputDateTime'
 import { StatusTable } from './StatusTable'
+import { BarType, BAR_TYPES_TRADE } from '@/constants/barType'
 
 const DEPTHS = [10, 12] as const
 const LOAD_SIZES = [1000, 5000, 10000] as const
-const BAR_TYPES = ['15M', '1H', '4H', '1D'] as const
-
 const DEFAULT_REQUEST: ZigZagGenerateRequest = {
   symbol: '',
   symbolType: 'Trade',
-  barType: '15M',
+  barType: BarType.M15,
   depth: 12,
   barDateTime: '',
   loadSize: 1000,
@@ -127,7 +126,7 @@ const ZigZagGeneratePage = () => {
             disabled={isLoading}
             onChange={(e) => void handleChange({ ...req, barType: e.target.value })}
           >
-            {BAR_TYPES.map((bt) => (
+            {BAR_TYPES_TRADE.map((bt) => (
               <option key={bt} value={bt}>
                 {bt}
               </option>

@@ -1,6 +1,7 @@
 import { SearchPager } from '@/components/SearchPager'
 import type { ZigZagSearchRequest, ZigZagSearchResponse } from '@/sandbox/dto/fx/zigzag'
 import type { SymbolDto } from '@/sandbox/dto/fx/symbol'
+import { BarType } from '@/constants/barType'
 
 const DEPTHS = [10, 12] as const
 const PAGE_SIZES = [50, 100, 200, 500] as const
@@ -55,8 +56,8 @@ export const SearchRow = ({
             </option>
           ))}
         </select>
-        <select className="page-size-select" value="4H" disabled>
-          <option value="4H">4H</option>
+        <select className="page-size-select" value={BarType.H4} disabled>
+          <option value={BarType.H4}>{BarType.H4}</option>
         </select>
       </div>
 

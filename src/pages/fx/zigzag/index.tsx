@@ -4,6 +4,7 @@ import { useToast } from '@/hooks/useToast'
 import { searchZigZag, fetchZigZagSymbolList } from '@/sandbox/api/fx/indicatorZigZagApi'
 import type { ZigZagSearchRequest, ZigZagSearchResponse } from '@/sandbox/dto/fx/zigzag'
 import type { SymbolDto } from '@/sandbox/dto/fx/symbol'
+import { BarType } from '@/constants/barType'
 import { SearchRow } from './SearchRow'
 import { MainTable } from './MainTable'
 
@@ -19,7 +20,7 @@ const tomorrow = (() => {
 const DEFAULT_REQUEST: ZigZagSearchRequest = {
   page: 1,
   size: 100,
-  barType: '4H',
+  barType: BarType.H4,
   symbol: 'USDJPY',
   depth: 12,
   wave: 1,

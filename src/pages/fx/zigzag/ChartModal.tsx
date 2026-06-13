@@ -2,11 +2,12 @@ import { useEffect, useRef, useState } from 'react'
 import { fetchZigZagBarData } from '@/sandbox/api/fx/indicatorZigZagApi'
 import type { ZigZagResult, ZigZagBarData, BarType } from '@/sandbox/dto/fx/zigzag'
 import { ZigZagColGroup, ZigZagHeaderRow, ZigZagDataRow } from './ZigZagResultRow'
+import { BarType as BarTypeConst } from '@/constants/barType'
 
 const BAR_TABS: { label: string; value: BarType }[] = [
-  { label: '15M', value: 'M15' },
-  { label: '1H', value: 'H1' },
-  { label: '4H', value: 'H4' },
+  { label: BarTypeConst.M15, value: BarTypeConst.M15 },
+  { label: BarTypeConst.H1, value: BarTypeConst.H1 },
+  { label: BarTypeConst.H4, value: BarTypeConst.H4 },
 ]
 
 const CHART_W = 1200
@@ -281,7 +282,7 @@ interface Props {
 
 export const ChartModal = ({ dataList, initialIndex, scale, onClose }: Props) => {
   const [currentIndex, setCurrentIndex] = useState(initialIndex)
-  const [barType, setBarType] = useState<BarType>('H4')
+  const [barType, setBarType] = useState<BarType>(BarTypeConst.H4)
   const result = dataList[currentIndex]
   const [barDataList, setBarDataList] = useState<ZigZagBarData[]>([])
   const [isLoading, setIsLoading] = useState(false)
