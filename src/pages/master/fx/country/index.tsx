@@ -12,6 +12,7 @@ const emptyResponse = (): CountrySearchResponse => ({
   returnCode: 0,
   totalCount: 0,
   searchCount: 0,
+  totalPage: 0,
   list: [],
 })
 

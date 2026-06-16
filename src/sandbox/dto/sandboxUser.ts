@@ -8,7 +8,7 @@ export interface SandboxUser {
   admin: boolean
   blocked: boolean
   createdAt: string
-  updatedAt: string
+  updatedAt?: string
 }
 
 export interface UserRegistrationRequest {

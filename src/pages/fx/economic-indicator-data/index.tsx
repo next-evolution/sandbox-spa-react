@@ -18,7 +18,8 @@ import { EconomicIndicatorDataTable } from './EconomicIndicatorDataTable'
 import { EconomicIndicatorDataModal } from './EconomicIndicatorDataModal'
 
 interface DataKey {
-  id: number | null
+  countryCode: string | null
+  code: string | null
   publication: string | null
 }
 
@@ -46,7 +47,7 @@ const EconomicIndicatorDataPage = () => {
   const [indicatorList, setIndicatorList] = useState<KeyValue[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [dataKey, setDataKey] = useState<DataKey>({ id: null, publication: null })
+  const [dataKey, setDataKey] = useState<DataKey>({ countryCode: null, code: null, publication: null })
   const { toast, showToast } = useToast()
 
   const doSearch = async (req: EconomicIndicatorDataSearchRequest) => {
@@ -93,7 +94,7 @@ const EconomicIndicatorDataPage = () => {
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleCountryChange = (countryCode: string) => {
-    const req = { ...searchReq, countryCode, id: undefined, page: 1 }
+    const req = { ...searchReq, countryCode, code: undefined, page: 1 }
     void loadIndicatorList(countryCode)
     void doSearch(req)
   }
@@ -101,10 +102,10 @@ const EconomicIndicatorDataPage = () => {
   const openModal = (index: number = -1) => {
     if (!isAdmin) return
     if (index < 0) {
-      setDataKey({ id: null, publication: null })
+      setDataKey({ countryCode: null, code: null, publication: null })
     } else {
       const item = searchRes.list[index]
-      setDataKey({ id: item.id, publication: item.publication })
+      setDataKey({ countryCode: item.countryCode, code: item.code, publication: item.publication })
     }
     setIsModalOpen(true)
   }
@@ -201,11 +202,11 @@ const EconomicIndicatorDataPage = () => {
           <label className="page-size-label">指標:</label>
           <select
             className="page-size-select"
-            value={searchReq.id ?? ''}
+            value={searchReq.code ?? ''}
             onChange={(e) =>
               void doSearch({
                 ...searchReq,
-                id: e.target.value ? Number(e.target.value) : undefined,
+                code: e.target.value || undefined,
                 page: 1,
               })
             }

@@ -10,16 +10,18 @@ const DAYS_JP = ['日', '月', '火', '水', '木', '金', '土']
 const importanceLabel = (v: string) => (v === 'H' ? '高' : v === 'M' ? '中' : '低')
 
 const formatPublication = (data: EconomicIndicatorData) => {
-  const year = data.publicationDate.substring(0, 4)
-  const mmdd = data.publicationDate.substring(5, 10).replace('-', '/')
-  const day = DAYS_JP[data.dayOfWeek] ?? ''
-  const hh = data.publicationTime.substring(0, 2)
-  const min = data.publicationTime.substring(3, 5)
+  const date = data.publicationDate ?? ''
+  const time = data.publicationTime ?? ''
+  const year = date.substring(0, 4)
+  const mmdd = date.substring(5, 10).replace('-', '/')
+  const day = data.dayOfWeek != null ? (DAYS_JP[data.dayOfWeek] ?? '') : ''
+  const hh = time.substring(0, 2)
+  const min = time.substring(3, 5)
   return { year, mmdd, day, hh, min }
 }
 
 const getName = (data: EconomicIndicatorData) =>
-  data.subTitle ? `${data.subTitle}${data.name}` : data.name
+  data.subTitle ? `${data.subTitle}${data.name ?? ''}` : (data.name ?? '')
 
 const resultValueClass = (data: EconomicIndicatorData): string => {
   if (data.resultValue === '-') return 'price-neutral-lg'
@@ -71,11 +73,11 @@ export const EconomicIndicatorDataTable = ({ list, onRowDoubleClick }: Props) =>
             const pub = formatPublication(row)
             return (
               <tr
-                key={`${row.id}_${row.publication}`}
+                key={`${row.code}_${row.publication}`}
                 className={row.importance === 'H' ? 'importance-high' : ''}
                 onDoubleClick={() => onRowDoubleClick(i)}
               >
-                <td className="col-center">{importanceLabel(row.importance)}</td>
+                <td className="col-center">{importanceLabel(row.importance ?? '')}</td>
                 <td style={{ fontSize: '0.82rem', whiteSpace: 'nowrap' }}>
                   <span style={{ fontSize: '0.75rem' }}>{pub.year}/</span>
                   {pub.mmdd}

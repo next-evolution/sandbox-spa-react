@@ -86,6 +86,7 @@ export interface ZigZagSearchResponse {
 }
 
 export interface ZigZagStatus {
+  symbolType: string
   barType: string
   symbol: string
   depth: number
@@ -107,12 +108,16 @@ export interface ZigZagStatusRequest {
 }
 
 export interface ZigZagStatusResponse {
+  returnCode: number
+  message?: string
+  totalCount: number
+  searchCount: number
+  totalPage: number
   list: ZigZagStatus[]
 }
 
 export interface ZigZagGenerateRequest {
   symbol: string
-  symbolType: string
   barType: string
   depth: number
   barDateTime: string

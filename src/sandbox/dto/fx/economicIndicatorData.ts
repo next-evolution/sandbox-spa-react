@@ -1,13 +1,13 @@
 export interface EconomicIndicatorData {
-  id: number
+  code: string
   countryCode: string
-  name: string
-  importance: string
+  name?: string
+  importance?: string
   description?: string
   publication: string // yyyy-MM-dd HH:mm:ss
-  publicationDate: string // yyyy-MM-dd
-  publicationTime: string // HH:mm
-  dayOfWeek: number
+  publicationDate?: string // yyyy-MM-dd
+  publicationTime?: string // HH:mm
+  dayOfWeek?: number
   subTitle?: string
   resultValue: string
   forecastValue?: string
@@ -23,7 +23,7 @@ export interface EconomicIndicatorDataSearchRequest {
   size: number
   countryCode?: string
   importance?: string
-  id?: number
+  code?: string
   sortAsc?: boolean
   publicationBaseDate?: string // yyyy-MM-dd
 }

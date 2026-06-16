@@ -21,13 +21,13 @@ export const EconomicIndicatorTable = ({ list, onRowDoubleClick }: Props) => {
             <th>Name</th>
             <th>Description</th>
             <th>Unit</th>
-            <th className="col-right">ID</th>
+            <th className="col-right">Code</th>
           </tr>
         </thead>
         <tbody>
           {list.map((item, index) => (
             <tr
-              key={item.id ?? index}
+              key={item.code ?? index}
               className={item.importance === 'H' ? 'ei-row-high' : ''}
               onDoubleClick={() => onRowDoubleClick(index)}
             >
@@ -40,7 +40,7 @@ export const EconomicIndicatorTable = ({ list, onRowDoubleClick }: Props) => {
               <td>{item.description ?? ''}</td>
               <td>{item.unitOfValue ?? ''}</td>
               <td className="col-right" style={{ fontSize: '0.78rem', opacity: 0.6 }}>
-                {item.id}
+                {item.code}
               </td>
             </tr>
           ))}

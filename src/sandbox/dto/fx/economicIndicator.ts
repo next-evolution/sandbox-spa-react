@@ -1,5 +1,5 @@
 export interface EconomicIndicatorDto {
-  id?: number
+  code: string
   countryCode: string
   name: string
   importance: string

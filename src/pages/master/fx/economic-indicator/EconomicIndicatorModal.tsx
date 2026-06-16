@@ -10,7 +10,7 @@ import type { EconomicIndicatorDto, KeyValue } from '@/sandbox/dto/fx/economicIn
 import { IMPORTANCE_TYPES } from '@/sandbox/dto/fx/economicIndicator'
 
 interface IndicatorKey {
-  id: number | null
+  code: string | null
   countryCode: string
 }
 
@@ -23,6 +23,7 @@ interface Props {
 }
 
 const emptyDto = (countryCode: string): EconomicIndicatorDto => ({
+  code: '',
   countryCode,
   name: '',
   importance: 'H',
@@ -41,7 +42,7 @@ export const EconomicIndicatorModal = ({
 }: Props) => {
   const { sandboxUser } = useAuth()
   const isAdmin = sandboxUser?.admin === true
-  const isNew = indicatorKey.id === null
+  const isNew = indicatorKey.code === null
 
   const [form, setForm] = useState<EconomicIndicatorDto>(emptyDto(indicatorKey.countryCode))
   const [isLoading, setIsLoading] = useState(false)
@@ -49,14 +50,14 @@ export const EconomicIndicatorModal = ({
 
   useEffect(() => {
     if (!isOpen) return
-    if (indicatorKey.id === null) {
+    if (indicatorKey.code === null) {
       setForm(emptyDto(indicatorKey.countryCode))
       setErrors({})
       return
     }
     let cancelled = false
     setIsLoading(true)
-    getEconomicIndicator(indicatorKey.countryCode, indicatorKey.id)
+    getEconomicIndicator(indicatorKey.countryCode, indicatorKey.code)
       .then((data) => {
         if (!cancelled) {
           setForm(data)
@@ -75,7 +76,7 @@ export const EconomicIndicatorModal = ({
     return () => {
       cancelled = true
     }
-  }, [isOpen, indicatorKey.id, indicatorKey.countryCode]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [isOpen, indicatorKey.code, indicatorKey.countryCode]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const setField = (key: keyof EconomicIndicatorDto, value: string) => {
     setForm((prev) => ({ ...prev, [key]: value }))
@@ -100,7 +101,7 @@ export const EconomicIndicatorModal = ({
         await insertEconomicIndicator(form)
         onToast(`[${form.countryCode}] ${form.name} 登録しました。`, 'info')
       } else {
-        await updateEconomicIndicator(indicatorKey.countryCode, indicatorKey.id!, form)
+        await updateEconomicIndicator(indicatorKey.countryCode, indicatorKey.code!, form)
         onToast(`[${form.countryCode}] ${form.name} 更新しました。`, 'info')
       }
       onClose(true)

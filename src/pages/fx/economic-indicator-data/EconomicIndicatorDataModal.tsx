@@ -10,7 +10,8 @@ import type { EconomicIndicatorData } from '@/sandbox/dto/fx/economicIndicatorDa
 import type { KeyValue } from '@/sandbox/dto/fx/economicIndicator'
 
 interface DataKey {
-  id: number | null
+  countryCode: string | null
+  code: string | null
   publication: string | null
 }
 
@@ -24,7 +25,7 @@ interface Props {
 }
 
 interface FormState {
-  economicIndicatorId: number
+  economicIndicatorCode: string
   countryCode: string
   publicationDate: string
   publicationTime: string
@@ -36,7 +37,7 @@ interface FormState {
 }
 
 const emptyForm = (countryCode: string): FormState => ({
-  economicIndicatorId: 0,
+  economicIndicatorCode: '',
   countryCode,
   publicationDate: '',
   publicationTime: '',
@@ -57,7 +58,7 @@ export const EconomicIndicatorDataModal = ({
   onClose,
   onToast,
 }: Props) => {
-  const isNew = dataKey.id === null
+  const isNew = dataKey.code === null
 
   const [form, setForm] = useState<FormState>(emptyForm(defaultCountryCode || 'US'))
   const [indicatorList, setIndicatorList] = useState<KeyValue[]>([])
@@ -87,18 +88,18 @@ export const EconomicIndicatorDataModal = ({
           const list = await fetchEconomicIndicatorListByCountry(cc)
           if (!cancelled) {
             setIndicatorList(list)
-            setForm({ ...emptyForm(cc), economicIndicatorId: list[0] ? Number(list[0].key) : 0 })
+            setForm({ ...emptyForm(cc), economicIndicatorCode: list[0]?.key ?? '' })
           }
         } else {
-          const data = await getEconomicIndicatorData(dataKey.id!, dataKey.publication!)
+          const data = await getEconomicIndicatorData(dataKey.countryCode!, dataKey.code!, dataKey.publication!)
           const list = await fetchEconomicIndicatorListByCountry(data.countryCode)
           if (!cancelled) {
             setIndicatorList(list)
             setForm({
-              economicIndicatorId: data.id,
+              economicIndicatorCode: data.code,
               countryCode: data.countryCode,
-              publicationDate: data.publicationDate,
-              publicationTime: data.publicationTime,
+              publicationDate: data.publicationDate ?? '',
+              publicationTime: data.publicationTime ?? '',
               subTitle: data.subTitle ?? '',
               resultValue: data.resultValue,
               forecastValue: data.forecastValue ?? '',
@@ -120,7 +121,7 @@ export const EconomicIndicatorDataModal = ({
     return () => {
       cancelled = true
     }
-  }, [isOpen, dataKey.id, dataKey.publication]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [isOpen, dataKey.code, dataKey.publication]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const setField = <K extends keyof FormState>(key: K, value: FormState[K]) => {
     setForm((prev) => ({ ...prev, [key]: value }))
@@ -134,7 +135,7 @@ export const EconomicIndicatorDataModal = ({
     setForm((prev) => ({
       ...prev,
       countryCode,
-      economicIndicatorId: list[0] ? Number(list[0].key) : 0,
+      economicIndicatorCode: list[0]?.key ?? '',
     }))
     setIsLoading(false)
   }
@@ -142,7 +143,7 @@ export const EconomicIndicatorDataModal = ({
   const validate = (): boolean => {
     const errs: FormErrors = {}
     if (!form.countryCode) errs.countryCode = true
-    if (!form.economicIndicatorId) errs.economicIndicatorId = true
+    if (!form.economicIndicatorCode) errs.economicIndicatorCode = true
     if (!form.publicationDate) errs.publicationDate = true
     if (!form.publicationTime) errs.publicationTime = true
     if (!form.resultValue) errs.resultValue = true
@@ -156,7 +157,7 @@ export const EconomicIndicatorDataModal = ({
 
     const publication = `${form.publicationDate} ${form.publicationTime}:00`
     const data: EconomicIndicatorData = {
-      id: form.economicIndicatorId,
+      code: form.economicIndicatorCode,
       countryCode: form.countryCode,
       name: '',
       importance: '',
@@ -177,7 +178,7 @@ export const EconomicIndicatorDataModal = ({
         await insertEconomicIndicatorData(data)
         onToast(`登録しました。`, 'info')
       } else {
-        await updateEconomicIndicatorData(dataKey.id!, dataKey.publication!, data)
+        await updateEconomicIndicatorData(dataKey.countryCode!, dataKey.code!, dataKey.publication!, data)
         onToast(`更新しました。`, 'info')
       }
       onClose(true)
@@ -222,9 +223,9 @@ export const EconomicIndicatorDataModal = ({
         <div className="modal-field">
           <label className="modal-label">経済指標</label>
           <select
-            className={`modal-input${errors.economicIndicatorId ? ' error' : ''}`}
-            value={form.economicIndicatorId}
-            onChange={(e) => setField('economicIndicatorId', Number(e.target.value))}
+            className={`modal-input${errors.economicIndicatorCode ? ' error' : ''}`}
+            value={form.economicIndicatorCode}
+            onChange={(e) => setField('economicIndicatorCode', e.target.value)}
           >
             {indicatorList.map((item) => (
               <option key={item.key} value={item.key}>
