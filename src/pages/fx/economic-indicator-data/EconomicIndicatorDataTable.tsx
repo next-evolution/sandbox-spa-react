@@ -7,7 +7,8 @@ interface Props {
 
 const DAYS_JP = ['日', '月', '火', '水', '木', '金', '土']
 
-const importanceLabel = (v: string) => (v === 'H' ? '高' : v === 'M' ? '中' : '低')
+const importanceLabel = (v: string) =>
+  v === 'H' ? '高' : v === 'M' ? '中' : v === 'L' ? '低' : v === 'Z' ? '重' : v
 
 const formatPublication = (data: EconomicIndicatorData) => {
   const date = data.publicationDate ?? ''
@@ -20,8 +21,10 @@ const formatPublication = (data: EconomicIndicatorData) => {
   return { year, mmdd, day, hh, min }
 }
 
-const getName = (data: EconomicIndicatorData) =>
-  data.subTitle ? `${data.subTitle}${data.name ?? ''}` : (data.name ?? '')
+const getName = (data: EconomicIndicatorData) => {
+  if (data.code === 'NEWS_INFO') return data.memo ?? ''
+  return data.subTitle ? `${data.subTitle}${data.name ?? ''}` : (data.name ?? '')
+}
 
 const resultValueClass = (data: EconomicIndicatorData): string => {
   if (data.resultValue === '-') return 'price-neutral-lg'
@@ -74,7 +77,7 @@ export const EconomicIndicatorDataTable = ({ list, onRowDoubleClick }: Props) =>
             return (
               <tr
                 key={`${row.code}_${row.publication}`}
-                className={row.importance === 'H' ? 'importance-high' : ''}
+                className={row.importance === 'H' || row.importance === 'Z' ? 'importance-high' : ''}
                 onDoubleClick={() => onRowDoubleClick(i)}
               >
                 <td className="col-center">{importanceLabel(row.importance ?? '')}</td>

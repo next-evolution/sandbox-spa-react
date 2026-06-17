@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
 
 const features = [
@@ -42,8 +42,10 @@ const TOKEN_FIELDS = [
 ]
 
 const HomePage = () => {
-  const { isAuthenticated, tokens } = useAuth()
+  const { isAuthenticated, isLoading, tokens } = useAuth()
   const [copiedKey, setCopiedKey] = useState<string | null>(null)
+
+  if (!isLoading && isAuthenticated) return <Navigate to="/menu" replace />
 
   const copyToken = (key: string, value: string) => {
     navigator.clipboard.writeText(value)
