@@ -13,7 +13,7 @@ import { EconomicIndicatorTable } from './EconomicIndicatorTable'
 import { EconomicIndicatorModal } from './EconomicIndicatorModal'
 
 interface IndicatorKey {
-  id: number | null
+  code: string | null
   countryCode: string
 }
 
@@ -40,7 +40,7 @@ const EconomicIndicatorPage = () => {
   const [countryList, setCountryList] = useState<KeyValue[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [indicatorKey, setIndicatorKey] = useState<IndicatorKey>({ id: null, countryCode: 'JP' })
+  const [indicatorKey, setIndicatorKey] = useState<IndicatorKey>({ code: null, countryCode: 'JP' })
   const { toast, showToast } = useToast()
   const nameInputRef = useRef<HTMLInputElement>(null)
 
@@ -85,10 +85,10 @@ const EconomicIndicatorPage = () => {
 
   const openModal = (index: number = -1) => {
     if (index < 0) {
-      setIndicatorKey({ id: null, countryCode: searchReq.countryCode || 'JP' })
+      setIndicatorKey({ code: null, countryCode: searchReq.countryCode || 'JP' })
     } else {
       const item = searchRes.list[index]
-      setIndicatorKey({ id: item.id ?? null, countryCode: item.countryCode })
+      setIndicatorKey({ code: item.code, countryCode: item.countryCode })
     }
     setIsModalOpen(true)
   }
@@ -143,8 +143,8 @@ const EconomicIndicatorPage = () => {
             <option value="">全件</option>
             <option value="H">H - 高</option>
             <option value="M">M - 中</option>
-            <option value="X">X - 低</option>
-            <option value="Z">Z - その他</option>
+            <option value="L">L - 低</option>
+            <option value="Z">Z - 重</option>
           </select>
         </div>
         <div className="ei-filter-group">

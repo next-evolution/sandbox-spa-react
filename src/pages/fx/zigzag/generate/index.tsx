@@ -9,9 +9,9 @@ import { BarType, BAR_TYPES_TRADE } from '@/constants/barType'
 
 const DEPTHS = [10, 12] as const
 const LOAD_SIZES = [1000, 5000, 10000] as const
+const SYMBOL_TYPE = 'Trade'
 const DEFAULT_REQUEST: ZigZagGenerateRequest = {
   symbol: '',
-  symbolType: 'Trade',
   barType: BarType.M15,
   depth: 12,
   barDateTime: '',
@@ -43,7 +43,7 @@ const ZigZagGeneratePage = () => {
     setIsLoading(true)
     try {
       const res = await fetchZigZagStatusList({
-        symbolType: r.symbolType,
+        symbolType: SYMBOL_TYPE,
         barType: r.barType,
         depth: r.depth,
       })
@@ -59,8 +59,7 @@ const ZigZagGeneratePage = () => {
   const handleChange = async (next: ZigZagGenerateRequest) => {
     const needsRefetch =
       next.barType !== req.barType ||
-      next.depth !== req.depth ||
-      next.symbolType !== req.symbolType
+      next.depth !== req.depth
     if (needsRefetch) {
       await fetchStatus(next)
     } else {

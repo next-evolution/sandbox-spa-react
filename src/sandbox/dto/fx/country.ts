@@ -17,6 +17,6 @@ export interface CountrySearchResponse {
   message?: string
   totalCount: number
   searchCount: number
-  totalPage?: number
+  totalPage: number
   list: Country[]
 }

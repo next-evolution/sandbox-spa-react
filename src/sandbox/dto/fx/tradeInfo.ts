@@ -16,7 +16,6 @@ export interface TradeEntry {
   fibonacciBar: string
   contractPrice: number
   lossPrice: number
-  riskAmount: number
   positionRatio: number
   priceJpy: number
   lot: number
@@ -25,6 +24,7 @@ export interface TradeEntry {
   settlementRatio: number
   comment: string
   imagePath: string
+  dollarCurrency?: boolean
 }
 
 export interface TradePosition {
@@ -79,7 +79,6 @@ export const newEntry = (): TradeEntry => ({
   fibonacciBar: BarType.M15,
   contractPrice: 0,
   lossPrice: 0,
-  riskAmount: RISK_AMOUNT,
   positionRatio: POSITION_RATIO,
   priceJpy: 0,
   lot: 0,

@@ -18,11 +18,12 @@ export const searchEconomicIndicatorData = async (
 }
 
 export const getEconomicIndicatorData = async (
-  economicIndicatorId: number,
+  countryCode: string,
+  code: string,
   publication: string
 ): Promise<EconomicIndicatorData> => {
   const res = await sandboxApi.get<EconomicIndicatorData>(
-    `/v1/fx/economic-indicator-data/${economicIndicatorId}/${encodeURIComponent(publication)}`
+    `/v1/fx/economic-indicator-data/${countryCode}/${code}/${encodeURIComponent(publication)}`
   )
   return res.data
 }
@@ -32,12 +33,13 @@ export const insertEconomicIndicatorData = async (data: EconomicIndicatorData): 
 }
 
 export const updateEconomicIndicatorData = async (
-  economicIndicatorId: number,
+  countryCode: string,
+  code: string,
   publication: string,
   data: EconomicIndicatorData
 ): Promise<void> => {
   await sandboxApi.put(
-    `/v1/fx/economic-indicator-data/${economicIndicatorId}/${encodeURIComponent(publication)}`,
+    `/v1/fx/economic-indicator-data/${countryCode}/${code}/${encodeURIComponent(publication)}`,
     { data }
   )
 }

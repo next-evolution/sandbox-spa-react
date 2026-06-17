@@ -1,5 +1,5 @@
 export interface EconomicIndicatorDto {
-  id?: number
+  code: string
   countryCode: string
   name: string
   importance: string
@@ -31,11 +31,11 @@ export interface KeyValue {
   value: string
 }
 
-export const IMPORTANCE_TYPES = ['H', 'M', 'X', 'Z'] as const
+export const IMPORTANCE_TYPES = ['H', 'M', 'L', 'Z'] as const
 
 export const IMPORTANCE_LABEL: Record<string, string> = {
   H: '高',
   M: '中',
-  X: '低',
-  Z: 'その他',
+  L: '低',
+  Z: '重',
 }

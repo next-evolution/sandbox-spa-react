@@ -106,7 +106,7 @@ paths:
       responses:
         "200":
           description: OK
-  /v1/fx/economic-indicator/{countryCode}/{id}:
+  /v1/fx/economic-indicator/{countryCode}/{code}:
     get:
       tags:
       - economic-indicator-controller
@@ -117,12 +117,11 @@ paths:
         required: true
         schema:
           type: string
-      - name: id
+      - name: code
         in: path
         required: true
         schema:
-          type: integer
-          format: int64
+          type: string
       responses:
         "200":
           description: OK
@@ -140,12 +139,11 @@ paths:
         required: true
         schema:
           type: string
-      - name: id
+      - name: code
         in: path
         required: true
         schema:
-          type: integer
-          format: int64
+          type: string
       requestBody:
         content:
           application/json:
@@ -155,18 +153,22 @@ paths:
       responses:
         "200":
           description: OK
-  /v1/fx/economic-indicator-data/{economicIndicatorId}/{publication}:
+  /v1/fx/economic-indicator-data/{countryCode}/{code}/{publication}:
     get:
       tags:
       - economic-indicator-data-controller
       operationId: get_3
       parameters:
-      - name: economicIndicatorId
+      - name: countryCode
         in: path
         required: true
         schema:
-          type: integer
-          format: int64
+          type: string
+      - name: code
+        in: path
+        required: true
+        schema:
+          type: string
       - name: publication
         in: path
         required: true
@@ -185,12 +187,16 @@ paths:
       - economic-indicator-data-controller
       operationId: update_4
       parameters:
-      - name: economicIndicatorId
+      - name: countryCode
         in: path
         required: true
         schema:
-          type: integer
-          format: int64
+          type: string
+      - name: code
+        in: path
+        required: true
+        schema:
+          type: string
       - name: publication
         in: path
         required: true
@@ -1036,10 +1042,10 @@ components:
     EconomicIndicatorDto:
       type: object
       properties:
-        id:
-          type: integer
-          format: int64
-          description: ID（更新時は必須）
+        code:
+          type: string
+          description: 経済指標コード
+          example: CPI_YOY
         countryCode:
           type: string
           description: 国コード
@@ -1068,6 +1074,7 @@ components:
           type: string
           description: 国名略称
       required:
+      - code
       - countryCode
       - importance
       - name
@@ -1081,13 +1088,14 @@ components:
     EconomicIndicatorDataDto:
       type: object
       properties:
-        id:
-          type: integer
-          format: int64
-          description: 経済指標ID
+        code:
+          type: string
+          description: 経済指標コード
+          example: CPI_YOY
         countryCode:
           type: string
           description: 国コード
+          example: JP
         name:
           type: string
           description: 指標名
@@ -1137,7 +1145,8 @@ components:
           type: string
           description: 国名略称
       required:
-      - id
+      - code
+      - countryCode
       - publication
       - resultValue
     EconomicIndicatorDataRequest:
@@ -2129,10 +2138,9 @@ components:
         importance:
           type: string
           description: 重要度
-        id:
-          type: integer
-          format: int64
-          description: 経済指標ID
+        code:
+          type: string
+          description: 経済指標コード
         sortAsc:
           type: boolean
           description: 昇順ソート
