@@ -1059,7 +1059,7 @@ components:
           enum:
           - H
           - M
-          - X
+          - L
           - Z
         description:
           type: string
