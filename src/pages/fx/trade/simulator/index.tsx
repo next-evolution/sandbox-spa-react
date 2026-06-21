@@ -85,11 +85,11 @@ const SimulatorPage = () => {
     try {
       const res = await calculateTrade(req)
       const padded = positionPadding3(res.positionList)
-      // バックエンドが priceJpy を返さないため、グローバル入力値で上書きして保持する
+      setPriceJpy(res.entry.priceJpy)
       setPanels((prev) =>
         prev.map((p) =>
           p.id === panel.id
-            ? { ...p, entry: { ...res.entry, priceJpy: globals.priceJpy }, positionList: padded, isLoading: false }
+            ? { ...p, entry: res.entry, positionList: padded, isLoading: false }
             : p
         )
       )
