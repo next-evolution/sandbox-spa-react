@@ -6,8 +6,8 @@ export type { UserResponse } from '@/sandbox/dto/sandboxUser'
 export interface UsersSearchRequest {
   page: number
   size: number
-  emailAddress: string
-  approved: boolean | null
+  emailAddress?: string
+  approved?: boolean | null
 }
 
 export interface UserSearchResponse {

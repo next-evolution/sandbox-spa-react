@@ -4,7 +4,7 @@ export interface EconomicIndicatorData {
   name?: string
   importance?: string
   description?: string
-  publication: string // yyyy-MM-dd HH:mm:ss
+  publication: string // date-time (ISO 8601: 2026-01-23T12:34:56+09:00)
   publicationDate?: string // yyyy-MM-dd
   publicationTime?: string // HH:mm
   dayOfWeek?: number
@@ -38,9 +38,9 @@ export interface EconomicIndicatorDataSearchResponse {
 }
 
 export interface TextImportResult {
-  fileName: string
-  fileSize: number
-  resultStatus: string
-  readCount: number
+  fileName?: string
+  fileSize?: number
+  resultStatus?: string
+  readCount?: number
   message?: string
 }

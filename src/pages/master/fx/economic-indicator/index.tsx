@@ -143,7 +143,7 @@ const EconomicIndicatorPage = () => {
             <option value="">全件</option>
             <option value="H">H - 高</option>
             <option value="M">M - 中</option>
-            <option value="L">L - 低</option>
+            <option value="X">X - 低</option>
             <option value="Z">Z - 重</option>
           </select>
         </div>

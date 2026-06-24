@@ -126,6 +126,7 @@ export interface ZigZagGenerateRequest {
 
 export interface ZigZagGenerateResponse {
   returnCode: number
+  message?: string
   status: ZigZagStatus
 }
 
