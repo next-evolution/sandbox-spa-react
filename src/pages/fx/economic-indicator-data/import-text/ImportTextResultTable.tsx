@@ -32,10 +32,10 @@ export const ImportTextResultTable = ({ list }: Props) => {
             <tr key={row.fileName}>
               <td style={{ fontSize: '0.78rem' }}>{row.fileName}</td>
               <td className="col-right" style={{ fontSize: '0.78rem' }}>
-                {row.fileSize.toLocaleString()}
+                {row.fileSize?.toLocaleString() ?? ''}
               </td>
               <td className="col-center">{row.resultStatus}</td>
-              <td className="col-right">{row.readCount.toLocaleString()}</td>
+              <td className="col-right">{row.readCount?.toLocaleString() ?? ''}</td>
               <td style={{ fontSize: '0.78rem' }}>{row.message ?? ''}</td>
             </tr>
           ))}

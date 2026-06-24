@@ -12,7 +12,7 @@ const MasterRefreshPage = () => {
     setIsLoading(true)
     try {
       const res = await getMasterRefreshStatus()
-      setStatusMessage(res.message)
+      setStatusMessage(res.message ?? '')
     } catch (e) {
       showToast((e as Error).message, 'error')
     } finally {
@@ -29,7 +29,7 @@ const MasterRefreshPage = () => {
     setIsLoading(true)
     try {
       const res = await executeMasterRefresh()
-      setStatusMessage(res.message)
+      setStatusMessage(res.message ?? '')
       if (res.returnCode === 0) {
         showToast('Master Refresh completed.', 'info')
       }
