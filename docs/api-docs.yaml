@@ -971,7 +971,6 @@ components:
           description: ユーザー情報
       required:
       - returnCode
-      - user
     SymbolDto:
       type: object
       properties:
