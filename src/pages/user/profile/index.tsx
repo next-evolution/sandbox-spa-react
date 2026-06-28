@@ -11,10 +11,9 @@ const ProfilePage = () => {
   const navigate = useNavigate()
   const { toast, showToast } = useToast()
   const [profile, setProfile] = useState<SandboxUser | null>(sandboxUser)
-  const [isLoading, setIsLoading] = useState(!sandboxUser)
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    if (sandboxUser) return
     void fetchProfile()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
