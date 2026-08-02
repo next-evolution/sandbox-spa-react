@@ -60,5 +60,12 @@ export const fetchEconomicIndicatorListByCountry = async (
 ): Promise<KeyValue[]> => {
   const code = countryCode || 'ALL'
   const res = await sandboxApi.get<KeyValue[]>(`/v1/fx/master-list/economic-indicator/${code}`)
-  return res.data
+  // countryCode='ALL'指定時などにkeyが重複するレコードが含まれるため、
+  // select表示でReactのkey重複エラーを起こさないよう重複排除する
+  const seen = new Set<string>()
+  return res.data.filter((item) => {
+    if (seen.has(item.key)) return false
+    seen.add(item.key)
+    return true
+  })
 }
