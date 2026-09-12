@@ -36,6 +36,6 @@ export const IMPORTANCE_TYPES = ['H', 'M', 'X', 'Z'] as const
 export const IMPORTANCE_LABEL: Record<string, string> = {
   H: '高',
   M: '中',
-  X: '低',
+  X: '情',
   Z: '重',
 }

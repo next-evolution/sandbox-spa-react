@@ -83,8 +83,11 @@ export const EconomicIndicatorModal = ({
     setErrors((prev) => ({ ...prev, [key]: false }))
   }
 
+  const CODE_PATTERN = /^[A-Z0-9_]+$/
+
   const validate = (): boolean => {
     const errs: FormErrors = {}
+    if (!form.code || !CODE_PATTERN.test(form.code)) errs.code = true
     if (!form.countryCode) errs.countryCode = true
     if (!form.importance) errs.importance = true
     if (!form.name) errs.name = true
@@ -131,6 +134,7 @@ export const EconomicIndicatorModal = ({
           <select
             className={`modal-input${errors.countryCode ? ' error' : ''}`}
             value={form.countryCode}
+            disabled={!isNew}
             onChange={(e) => setField('countryCode', e.target.value)}
           >
             {countryList.map((c) => (
@@ -139,6 +143,16 @@ export const EconomicIndicatorModal = ({
               </option>
             ))}
           </select>
+        </div>
+        <div className="modal-field">
+          <label className="modal-label">コード</label>
+          <input
+            className={`modal-input${errors.code ? ' error' : ''}`}
+            value={form.code}
+            disabled={!isNew}
+            placeholder="CPI_YOY"
+            onChange={(e) => setField('code', e.target.value.toUpperCase())}
+          />
         </div>
         <div className="modal-field">
           <label className="modal-label">重要度</label>

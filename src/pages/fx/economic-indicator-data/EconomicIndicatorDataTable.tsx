@@ -8,7 +8,7 @@ interface Props {
 const DAYS_JP = ['日', '月', '火', '水', '木', '金', '土']
 
 const importanceLabel = (v: string) =>
-  v === 'H' ? '高' : v === 'M' ? '中' : v === 'L' ? '低' : v === 'Z' ? '重' : v
+  v === 'H' ? '高' : v === 'M' ? '中' : v === 'X' ? '情' : v === 'Z' ? '重' : v
 
 const formatPublication = (data: EconomicIndicatorData) => {
   const date = data.publicationDate ?? ''
