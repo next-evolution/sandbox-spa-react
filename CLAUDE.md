@@ -21,6 +21,13 @@
 
 ---
 
+## 共通仕様（横断・FE/BE共通の大枠仕様）
+
+@../claude-code/architecture/auth.md
+@../claude-code/architecture/api-design.md
+
+---
+
 ## ドキュメント参照先
 
 | 内容 | ファイル |
@@ -28,13 +35,6 @@
 | 画面一覧・ルーティング・アクセス制御 | [docs/pages.md](docs/pages.md) |
 | バックエンド API 仕様 | [docs/api-docs.yaml](docs/api-docs.yaml) |
 
----
-
-## 言語設定
-
-- 常に日本語で会話する
-- コメントも日本語で記述する
-- エラーメッセージの説明も日本語で行う
 
 ---
 
@@ -63,7 +63,8 @@ npm run format
 |---|---|
 | VITE_COGNITO_USER_POOL_ID | ap-northeast-1_XXXXXXXXX |
 | VITE_COGNITO_CLIENT_ID | xxxxxxxxxxxxxxxxxxxx |
-| VITE_API_BASE_URL | http://localhost:8080 |
+| VITE_COGNITO_REGION | ap-northeast-1 |
+| VITE_APP_SANDBOX_API | http://localhost:8080 |
 
 ---
 
