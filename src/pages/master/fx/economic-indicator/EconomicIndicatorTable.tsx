@@ -27,7 +27,7 @@ export const EconomicIndicatorTable = ({ list, onRowDoubleClick }: Props) => {
         <tbody>
           {list.map((item, index) => (
             <tr
-              key={item.code ?? index}
+              key={item.code + item.countryCode}
               className={item.importance === 'H' || item.importance === 'Z' ? 'ei-row-high' : ''}
               onDoubleClick={() => onRowDoubleClick(index)}
             >
