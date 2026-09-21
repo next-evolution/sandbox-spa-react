@@ -111,7 +111,7 @@ src/
 
 ### 0. 前提条件（Claude Code利用時）
 
-`$SANDBOX_HOME` 直下に `claude-code`（横断仕様ドキュメントフォルダ、Google Driveへのシンボリックリンク）が必要です。`CLAUDE.md` の `@../claude-code/...` importの解決に使用されます。
+`$SANDBOX_HOME` 直下に `documents`（横断仕様ドキュメントフォルダ、Google Driveへのシンボリックリンク）が必要です。`CLAUDE.md` の `@../documents/...` importの解決に使用されます。
 
 ### 1. 依存関係インストール
 
