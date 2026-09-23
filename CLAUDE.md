@@ -33,7 +33,7 @@
 | 内容 | ファイル |
 |---|---|
 | 画面一覧・ルーティング・アクセス制御 | [docs/pages.md](docs/pages.md) |
-| バックエンド API 仕様 | [docs/api-docs.yaml](docs/api-docs.yaml) |
+| バックエンド API 仕様 | [api-docs.yaml](../documents/architecture/api-docs.yaml) |
 
 
 ---
@@ -97,7 +97,7 @@ src/
 1. AWS Amplify（Cognito）でサインイン → JWT 取得
 2. `AuthContext` が JWT をメモリ保持、`sandboxUser` を API から取得
 3. ルートガードが `sandboxUser.approved / admin / blocked` を見てリダイレクト制御
-4. API リクエストは `sandbox/api/sandboxApi.ts` の axios インスタンス経由（JWT を Authorization ヘッダに自動付与）
+4. API リクエストは `sandbox/api/sandboxApi.ts` の axios インスタンス経由。JWT は HttpOnly Cookie に格納され `withCredentials` で自動送信される（ログインAPI呼び出しのみ、Cookie未発行のため例外的に Authorization ヘッダで明示付与。[loginApi.ts](src/sandbox/api/loginApi.ts) 参照）
 
 ---
 
@@ -107,6 +107,7 @@ src/
 
 - `src/sandbox/api/` 配下のモジュールを経由する。直接 `fetch` / `axios` を呼ばない
 - レスポンスの `returnCode !== 0` はビジネスエラーとして `showToast` で通知する
+- CSRF トークンは `sandboxApi.ts` の axios 設定（`xsrfCookieName` / `xsrfHeaderName` / `withXSRFToken: true`）が自動でヘッダー付与する。手動で `X-XSRF-TOKEN` を付ける実装は不要（むしろ二重管理になるので避ける）
 
 ### 状態管理
 

@@ -156,7 +156,7 @@ Cognito の JWT トークンはリクエストヘッダーに自動付与する�
 
 | コマンド | 用途 |
 |---|---|
-| `/docs-check` | `docs/pages.md` / `docs/api-docs.yaml` と実装の乖離チェック。コミット前などに手動実行する |
+| `/docs-check` | `docs/pages.md` / `../documents/architecture/api-docs.yaml` と実装の乖離チェック。コミット前などに手動実行する |
 
 ---
 
@@ -165,4 +165,4 @@ Cognito の JWT トークンはリクエストヘッダーに自動付与する�
 | 内容 | ファイル |
 |---|---|
 | 画面一覧・ルーティング・アクセス制御 | [docs/pages.md](docs/pages.md) |
-| バックエンド API 仕様 | [docs/api-docs.yaml](docs/api-docs.yaml) |
+| バックエンド API 仕様 | [api-docs.yaml](../documents/architecture/api-docs.yaml) |
