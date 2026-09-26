@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react'
 import { signIn, signOut, getCurrentUser, fetchAuthSession, type AuthUser } from 'aws-amplify/auth'
 import { callLoginApi, callLogoutApi } from '@/sandbox/api/loginApi'
+import { getUserProfile } from '@/sandbox/api/user/userApi'
 import type { SandboxUser, LoginResult } from '@/sandbox/dto/sandboxUser'
 
 export interface AuthTokens {
@@ -32,6 +33,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [tokens, setTokens] = useState<AuthTokens | null>(null)
   const [sandboxUser, setSandboxUser] = useState<SandboxUser | null>(null)
   const [email, setEmail] = useState<string | null>(null)
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -39,6 +41,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       const currentUser = await getCurrentUser()
       setUser(currentUser)
+      setIsAuthenticated(true)
 
       const session = await fetchAuthSession()
       const idTokenStr = session.tokens?.idToken?.toString() ?? ''
@@ -58,9 +61,30 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
       }
     } catch {
-      setUser(null)
-      setTokens(null)
-      setSandboxUser(null)
+      // AmplifyのCognitoセッション(in-memory)が無い場合、sandbox_jwt Cookie（1時間有効）による
+      // サイレントログインを試みる。JwtAuthFilterがCookie中のJWTを検証しレスポンスすれば有効。
+      try {
+        const profileRes = await getUserProfile()
+        setUser(null)
+        setTokens(null)
+        setIsAuthenticated(true)
+        if (profileRes.returnCode === 0 && profileRes.user) {
+          setSandboxUser(profileRes.user)
+          setEmail(profileRes.user.emailAddress)
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(profileRes.user))
+        } else {
+          // Cookieは有効だがsandbox_user未登録（登録フロー未完了）
+          setSandboxUser(null)
+          setEmail(null)
+        }
+      } catch {
+        // sandbox_jwt Cookieも無効/失効 → 完全に未ログイン扱い
+        setUser(null)
+        setTokens(null)
+        setSandboxUser(null)
+        setEmail(null)
+        setIsAuthenticated(false)
+      }
     } finally {
       setIsLoading(false)
     }
@@ -82,6 +106,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         await signOut()
         setUser(null)
         setTokens(null)
+        setIsAuthenticated(false)
         result = await signIn({ username, password })
       } else {
         throw err
@@ -93,6 +118,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     const currentUser = await getCurrentUser()
     setUser(currentUser)
+    setIsAuthenticated(true)
 
     const session = await fetchAuthSession()
     const idTokenStr = session.tokens?.idToken?.toString() ?? ''
@@ -109,6 +135,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       await signOut()
       setUser(null)
       setTokens(null)
+      setIsAuthenticated(false)
       throw err
     }
 
@@ -129,6 +156,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     await signOut()
     setUser(null)
     setTokens(null)
+    setIsAuthenticated(false)
     throw new Error(apiRes.message ?? 'ログインに失敗しました')
   }
 
@@ -145,6 +173,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setTokens(null)
     setSandboxUser(null)
     setEmail(null)
+    setIsAuthenticated(false)
     localStorage.removeItem(STORAGE_KEY)
   }
 
@@ -162,7 +191,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         tokens,
         sandboxUser,
         email,
-        isAuthenticated: !!user,
+        isAuthenticated,
         isLoading,
         error,
         login,
