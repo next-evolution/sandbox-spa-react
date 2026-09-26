@@ -99,6 +99,36 @@ src/
 3. ルートガードが `sandboxUser.approved / admin / blocked` を見てリダイレクト制御
 4. API リクエストは `sandbox/api/sandboxApi.ts` の axios インスタンス経由。JWT は HttpOnly Cookie に格納され `withCredentials` で自動送信される（ログインAPI呼び出しのみ、Cookie未発行のため例外的に Authorization ヘッダで明示付与。[loginApi.ts](src/sandbox/api/loginApi.ts) 参照）
 
+### Cognitoトークンの保存先（重要な落とし穴）
+
+AmplifyのCognitoトークン（id/access/refresh）は `localStorage` に永続化させず、`src/config/inMemoryStorage.ts` の
+`InMemoryStorage` に保持する（`main.tsx` で `cognitoUserPoolsTokenProvider.setKeyValueStorage()` により差し替え済み）。
+XSSで `localStorage.getItem` 等により一括窃取されるリスクを避けるための対応。
+
+- トレードオフ: ページリロード/タブ再オープンでCognitoセッション（in-memory）自体は失われる。
+  ただし `AuthContext.checkCurrentUser()` は `getCurrentUser()` 失敗時に `GET /v1/user`（`sandbox_jwt` Cookieのみで
+  認証される）を叩き、成功すればログイン済み扱いにする「サイレントログイン」フォールバックを持つ（下記参照）。
+- ストレージを直接 `localStorage.removeItem` 等で操作しない。Amplifyの内部キー管理に依存する非公式操作になり壊れやすい。
+  保存先を変えたい場合は必ず `setKeyValueStorage()` 経由で行う。
+
+### リロード時のサイレントログイン（`sandbox_jwt` Cookie経由）
+
+上記のin-memory化により、リロード直後はAmplifyのCognitoセッションが無い状態になる。これをそのまま
+未ログイン扱いにするとリロードのたびに再ログインを要求してしまうため、`AuthContext.checkCurrentUser()`
+（`src/contexts/AuthContext.tsx`）は `getCurrentUser()` が失敗した場合に `getUserProfile()`
+（`GET /v1/user`、`sandbox_jwt` Cookieのみで認証）を試み、成功すれば `isAuthenticated=true` として扱う。
+
+- `sandbox_jwt` はログイン時のCognito IDトークンそのもの（Cookie `Max-Age=3600`）。トークン自体の有効期限
+  （約1時間）を超えて延命する機能ではなく、**その期限内のリロードだけ**を救済するもの。期限切れ後は通常どおり
+  フルログインが必要。
+- バックエンド（sandbox-api-springboot）の `JwtAuthFilter` は元々Redisセッションが無い場合に `sandbox_user`
+  テーブルから復元する「Silent Login」を実装済み（`docs/architecture.md`参照）なので、バックエンド変更は不要だった。
+- `sandbox_user` 未登録（登録フロー未完了）の場合、`GET /v1/user` は200・`returnCode!==0`・`user`なしを返す。
+  この場合も `isAuthenticated=true` / `sandboxUser=null` とし、`GuardRegistration` が登録画面へ振り分ける
+  （Amplifyセッションが生きている場合と同じ挙動）。
+- Amplify由来の `user`（`AuthUser`型）・`tokens`はこの経路では`null`のまま。`sandboxUser.nickName` 等アプリ独自の
+  ユーザー情報のみで後続画面は成立する前提（`user.username`はnullセーフなフォールバック表示にのみ使用）。
+
 ---
 
 ## 実装規約
