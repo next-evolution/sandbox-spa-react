@@ -35,10 +35,6 @@ const ZigZagGeneratePage = () => {
   const [req, setReq] = useState<ZigZagGenerateRequest>(DEFAULT_REQUEST)
   const [isLoading, setIsLoading] = useState(false)
 
-  useEffect(() => {
-    void fetchStatus(DEFAULT_REQUEST)
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
-
   const fetchStatus = async (r: ZigZagGenerateRequest) => {
     setIsLoading(true)
     try {
@@ -55,6 +51,10 @@ const ZigZagGeneratePage = () => {
       setIsLoading(false)
     }
   }
+
+  useEffect(() => {
+    void fetchStatus(DEFAULT_REQUEST)
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleChange = async (next: ZigZagGenerateRequest) => {
     const needsRefetch =

@@ -52,21 +52,6 @@ const SimulatorPage = () => {
   const [responses, setResponses] = useState<Record<number, TradeCalculateResponse>>({})
   const [isInitialized, setIsInitialized] = useState(false)
 
-  useEffect(() => {
-    const init = async () => {
-      try {
-        const list = await fetchTradeSymbolList()
-        setSymbolList(list)
-        setIsInitialized(true)
-        // 初期計算：順番に実行
-        await calcSequentially(INITIAL_PANELS, { riskAmount: RISK_AMOUNT, firstLotRatio: POSITION_RATIO, priceJpy: 0 })
-      } catch (e) {
-        showToast((e as Error).message, 'error')
-      }
-    }
-    void init()
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
-
   const calcOne = async (
     panel: PanelData,
     entry: TradeEntry,
@@ -110,6 +95,21 @@ const SimulatorPage = () => {
       await calcOne(panel, panel.entry, panel.positionList, globals)
     }
   }
+
+  useEffect(() => {
+    const init = async () => {
+      try {
+        const list = await fetchTradeSymbolList()
+        setSymbolList(list)
+        setIsInitialized(true)
+        // 初期計算：順番に実行
+        await calcSequentially(INITIAL_PANELS, { riskAmount: RISK_AMOUNT, firstLotRatio: POSITION_RATIO, priceJpy: 0 })
+      } catch (e) {
+        showToast((e as Error).message, 'error')
+      }
+    }
+    void init()
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleCalculate = async (panelId: number, entry: TradeEntry, positionList: TradePosition[]) => {
     const panel = panels.find((p) => p.id === panelId)

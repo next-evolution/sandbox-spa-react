@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '@/contexts/AuthContext'
+import { useAuth } from '@/hooks/useAuth'
 import { useToast } from '@/hooks/useToast'
 import { getUserProfile, updateUser } from '@/sandbox/api/user/userApi'
 import type { SandboxUser } from '@/sandbox/dto/sandboxUser'
@@ -12,10 +12,6 @@ const ProfilePage = () => {
   const { toast, showToast } = useToast()
   const [profile, setProfile] = useState<SandboxUser | null>(sandboxUser)
   const [isLoading, setIsLoading] = useState(true)
-
-  useEffect(() => {
-    void fetchProfile()
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const fetchProfile = async () => {
     setIsLoading(true)
@@ -33,6 +29,10 @@ const ProfilePage = () => {
       setIsLoading(false)
     }
   }
+
+  useEffect(() => {
+    void fetchProfile()
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleSubmit = async (nickName: string) => {
     if (!profile) return

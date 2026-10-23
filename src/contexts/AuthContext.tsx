@@ -1,32 +1,11 @@
-import { createContext, useContext, useState, useEffect, type ReactNode } from 'react'
+import { useState, useEffect, type ReactNode } from 'react'
 import { signIn, signOut, getCurrentUser, fetchAuthSession, type AuthUser } from 'aws-amplify/auth'
+import { AuthContext, type AuthTokens } from './AuthContextValue'
 import { callLoginApi, callLogoutApi } from '@/sandbox/api/loginApi'
 import { getUserProfile } from '@/sandbox/api/user/userApi'
 import type { SandboxUser, LoginResult } from '@/sandbox/dto/sandboxUser'
 
-export interface AuthTokens {
-  jwt: string
-  idToken: string
-  accessToken: string
-}
-
-interface AuthContextType {
-  user: AuthUser | null
-  tokens: AuthTokens | null
-  sandboxUser: SandboxUser | null
-  email: string | null
-  isAuthenticated: boolean
-  isLoading: boolean
-  error: string | null
-  login: (username: string, password: string) => Promise<LoginResult>
-  logout: () => Promise<void>
-  clearError: () => void
-  updateSandboxUser: (user: SandboxUser) => void
-}
-
 const STORAGE_KEY = 'sandboxUser'
-
-const AuthContext = createContext<AuthContextType | null>(null)
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<AuthUser | null>(null)
@@ -203,10 +182,4 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       {children}
     </AuthContext.Provider>
   )
-}
-
-export const useAuth = () => {
-  const ctx = useContext(AuthContext)
-  if (!ctx) throw new Error('useAuth must be used within AuthProvider')
-  return ctx
 }

@@ -15,16 +15,16 @@ export const PipsCalculator = ({ contractPrice, pips, multiply, scale, isDollar,
   const [resultPips, setResultPips] = useState(0)
   const [resultPrice, setResultPrice] = useState(0)
 
-  useEffect(() => {
-    calc({ pips, multiply })
-  }, [contractPrice, pips, multiply, isDollar, isBuy]) // eslint-disable-line react-hooks/exhaustive-deps
-
   const calc = (s: { pips: number; multiply: number }) => {
     const delta = isDollar ? (s.pips * s.multiply) / 100000 : (s.pips * s.multiply) / 1000
     setResultPips(s.pips * s.multiply)
     setResultPrice(isBuy ? contractPrice + delta : contractPrice - delta)
     setState(s)
   }
+
+  useEffect(() => {
+    calc({ pips, multiply })
+  }, [contractPrice, pips, multiply, isDollar, isBuy]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className="sim-pips-calc">
