@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useAuth } from '@/contexts/AuthContext'
+import { useAuth } from '@/hooks/useAuth'
 import { useToast } from '@/hooks/useToast'
 import { searchSymbols } from '@/sandbox/api/fx/symbolApi'
 import type { SymbolSearchRequest, SymbolSearchResponse } from '@/sandbox/dto/fx/symbol'

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useAuth } from '@/contexts/AuthContext'
+import { useAuth } from '@/hooks/useAuth'
 import { useToast } from '@/hooks/useToast'
 import { searchSummerTimes } from '@/sandbox/api/fx/summerTimeApi'
 import type { SummerTimeSearchRequest, SummerTimeSearchResponse } from '@/sandbox/dto/fx/summerTime'

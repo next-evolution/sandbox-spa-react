@@ -1,6 +1,6 @@
 # sandbox-spa-react
 
-- Vite + React 18 + TypeScript で構築された SPA。
+- Vite + React 19 + TypeScript で構築された SPA。
 - AWS Cognito による認証と RestAPI との連携を行う。
 
 ---
@@ -142,7 +142,7 @@ XSSで `localStorage.getItem` 等により一括窃取されるリスクを避�
 ### 状態管理
 
 - サーバー状態は各ページの `useState` + `useEffect` で管理（グローバルストアは導入しない）
-- 認証情報は `AuthContext`（`useAuth()`）からのみ取得する
+- 認証情報は `AuthContext`（`@/hooks/useAuth` の `useAuth()`）からのみ取得する
 
 ### コンポーネント設計
 

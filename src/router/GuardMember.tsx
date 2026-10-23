@@ -1,6 +1,6 @@
 import { type ReactNode } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
-import { useAuth } from '@/contexts/AuthContext'
+import { useAuth } from '@/hooks/useAuth'
 
 const GuardMember = ({ children }: { children: ReactNode }) => {
   const { isAuthenticated, isLoading, sandboxUser } = useAuth()

@@ -1,5 +1,5 @@
 import { useEffect, useState, type FormEvent } from 'react'
-import { useAuth } from '@/contexts/AuthContext'
+import { useAuth } from '@/hooks/useAuth'
 import { ModalDialog } from '@/components/ModalDialog'
 import { getSymbol, insertSymbol, updateSymbol } from '@/sandbox/api/fx/symbolApi'
 import type { SymbolDto } from '@/sandbox/dto/fx/symbol'

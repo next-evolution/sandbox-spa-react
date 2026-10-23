@@ -1,5 +1,5 @@
 import { useEffect, useState, type FormEvent } from 'react'
-import { useAuth } from '@/contexts/AuthContext'
+import { useAuth } from '@/hooks/useAuth'
 import { getCountry, insertCountry, updateCountry } from '@/sandbox/api/fx/countryApi'
 import type { Country } from '@/sandbox/dto/fx/country'
 import { ModalDialog } from '@/components/ModalDialog'
